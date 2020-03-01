@@ -1,26 +1,22 @@
-import React from "react"
-import logo from "./logo.svg"
-import "./App.css"
+import React, { ReactElement } from "react"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
+import { RootStore } from "./models/RootStore"
+import TodoApp from "./TodoApp"
+
+const store = RootStore.create()
+
+store.addTodo("Taste JavaScript", true)
+store.addTodo("Buy a unicorn")
+
+declare global {
+  interface Window {
+    store: typeof store
+  }
 }
+window.store = store
 
-export default App
+interface Props {}
+
+export default function App(_props: Props): ReactElement {
+  return <TodoApp store={store} />
+}
