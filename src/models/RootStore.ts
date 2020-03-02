@@ -44,7 +44,7 @@ export const RootStore = types
     removeTodo(id: string) {
       self.todos = cast(self.todos.filter(todo => todo.id !== id))
     },
-    removeCompleteTodos() {
+    clearCompletedTodos() {
       self.todos = cast(self.todos.filter(todo => !todo.completed))
     },
   }))

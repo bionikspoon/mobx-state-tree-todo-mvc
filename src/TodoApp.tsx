@@ -9,57 +9,36 @@ import { RootInstance } from "./models/RootStore"
 
 const cx = classnames.bind(styles)
 
-interface Props {
+interface TodoAppProps {
   store: RootInstance
 }
 
-const TodoApp: React.FC<Props> = observer(props => {
-  const { view } = useParams()
-  const todos = (() => {
-    switch (view) {
-      case "active":
-        return props.store.activeTodos
-      case "completed":
-        return props.store.completedTodos
-      default:
-        return props.store.todos
-    }
-  })()
+interface AddTodoInputProps {
+  onCreate: (label: string) => void
+}
+
+interface EditTodoInputProps {
+  show: boolean
+  value: string
+  onBlur: () => void
+  onChange: (label: string) => void
+}
+
+interface FilterTodosProps {
+  activeTodosCount: number
+  show: boolean
+  onClearCompleted: () => void
+}
+
+const TodoApp: React.FC<TodoAppProps> = observer(props => {
+  const todos = useFilteredTodos(props.store)
 
   return (
     <>
       <section className={cx("todoapp")}>
         <header className={cx("header")}>
           <h1>todos</h1>
-          {(() => {
-            const [input, setInput] = useState("")
-
-            const handleChange = (
-              event: React.ChangeEvent<HTMLInputElement>
-            ) => {
-              setInput(event.target.value)
-            }
-            const handleKeyDown = (
-              event: React.KeyboardEvent<HTMLInputElement>
-            ) => {
-              if (event.key === "Enter") {
-                props.store.addTodo(input)
-                setInput("")
-              }
-            }
-
-            return (
-              <input
-                type="text"
-                className={cx("new-todo")}
-                placeholder="What needs to be done?"
-                autoFocus
-                value={input}
-                onChange={handleChange}
-                onKeyDown={handleKeyDown}
-              />
-            )
-          })()}
+          <AddTodoInput onCreate={props.store.addTodo}></AddTodoInput>
         </header>
         {/* <!-- This section should be hidden by default and shown when there are todos --> */}
         {Boolean(todos.length) && (
@@ -104,13 +83,13 @@ const TodoApp: React.FC<Props> = observer(props => {
                         onClick={() => props.store.removeTodo(todo.id)}
                       ></button>
                     </div>
-                    {editing && (
-                      <EditTodoInput
-                        value={todo.label}
-                        onBlur={handleEditInputBlur}
-                        onChange={handleEditInputChange}
-                      />
-                    )}
+
+                    <EditTodoInput
+                      show={editing}
+                      value={todo.label}
+                      onBlur={handleEditInputBlur}
+                      onChange={handleEditInputChange}
+                    />
                   </li>
                 )
               })}
@@ -118,39 +97,13 @@ const TodoApp: React.FC<Props> = observer(props => {
           </section>
         )}
         {/* <!-- This footer should hidden by default and shown when there are todos --> */}
-        {Boolean(props.store.todos.length) && (
-          <footer className={cx("footer")}>
-            {/* <!-- This should be `0 items left` by default --> */}
-            <span className={cx("todo-count")}>
-              <strong>{props.store.activeTodosCount}</strong> item left
-            </span>
-            {/* <!-- Remove this if you don't implement routing --> */}
-            <ul className={cx("filters")}>
-              <li>
-                <NavLink exact to="/" activeClassName={cx("selected")}>
-                  All
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/active" activeClassName={cx("selected")}>
-                  Active
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/completed" activeClassName={cx("selected")}>
-                  Completed
-                </NavLink>
-              </li>
-            </ul>
-            {/* <!-- Hidden if no completed items are left ↓ --> */}
-            <button
-              className={cx("clear-completed")}
-              onClick={props.store.removeCompleteTodos}
-            >
-              Clear completed
-            </button>
-          </footer>
-        )}
+        {
+          <FilterTodos
+            show={Boolean(props.store.todos.length)}
+            activeTodosCount={props.store.activeTodosCount}
+            onClearCompleted={props.store.clearCompletedTodos}
+          ></FilterTodos>
+        }
       </section>
       <footer className={cx("info")}>
         <p>Double-click to edit a todo</p>
@@ -167,10 +120,43 @@ const TodoApp: React.FC<Props> = observer(props => {
 
 export default TodoApp
 
-interface EditTodoInputProps {
-  value: string
-  onBlur: () => void
-  onChange: (label: string) => void
+function useFilteredTodos(store: RootInstance) {
+  const { view } = useParams()
+
+  switch (view) {
+    case "active":
+      return store.activeTodos
+    case "completed":
+      return store.completedTodos
+    default:
+      return store.todos
+  }
+}
+
+const AddTodoInput: React.FC<AddTodoInputProps> = props => {
+  const [input, setInput] = useState("")
+
+  const handleStageCreate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value)
+  }
+  const handleCommitCreate = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && Boolean(input.length)) {
+      props.onCreate(input)
+      setInput("")
+    }
+  }
+
+  return (
+    <input
+      type="text"
+      className={cx("new-todo")}
+      placeholder="What needs to be done?"
+      autoFocus
+      value={input}
+      onChange={handleStageCreate}
+      onKeyDown={handleCommitCreate}
+    />
+  )
 }
 
 const EditTodoInput: React.FC<EditTodoInputProps> = props => {
@@ -185,6 +171,9 @@ const EditTodoInput: React.FC<EditTodoInputProps> = props => {
     }
   }
   const handleRevertChange = props.onBlur
+  if (!props.show) {
+    return null
+  }
 
   return (
     <input
@@ -195,5 +184,44 @@ const EditTodoInput: React.FC<EditTodoInputProps> = props => {
       onKeyDown={handleCommitChange}
       autoFocus
     />
+  )
+}
+
+const FilterTodos: React.FC<FilterTodosProps> = props => {
+  if (!props.show) {
+    return null
+  }
+  return (
+    <footer className={cx("footer")}>
+      {/* <!-- This should be `0 items left` by default --> */}
+      <span className={cx("todo-count")}>
+        <strong>{props.activeTodosCount}</strong> item left
+      </span>
+      {/* <!-- Remove this if you don't implement routing --> */}
+      <ul className={cx("filters")}>
+        <li>
+          <NavLink exact to="/" activeClassName={cx("selected")}>
+            All
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/active" activeClassName={cx("selected")}>
+            Active
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/completed" activeClassName={cx("selected")}>
+            Completed
+          </NavLink>
+        </li>
+      </ul>
+      {/* <!-- Hidden if no completed items are left ↓ --> */}
+      <button
+        className={cx("clear-completed")}
+        onClick={props.onClearCompleted}
+      >
+        Clear completed
+      </button>
+    </footer>
   )
 }
