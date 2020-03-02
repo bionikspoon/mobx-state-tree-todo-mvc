@@ -47,6 +47,8 @@ const TodoApp: React.FC<TodoAppProps> = observer(props => {
               id="toggle-all"
               className={cx("toggle-all")}
               type="checkbox"
+              checked={props.store.allCompleted}
+              onChange={props.store.toggleAll}
             />
             <label htmlFor="toggle-all">Mark all as complete</label>
             <ul className={cx("todo-list")}>
@@ -71,7 +73,7 @@ const TodoApp: React.FC<TodoAppProps> = observer(props => {
                         className={cx("toggle")}
                         type="checkbox"
                         checked={todo.completed}
-                        onChange={todo.toggle}
+                        onChange={() => todo.toggle()}
                       />
                       <label
                         onDoubleClick={() => props.store.editTodo(todo.id)}
@@ -134,15 +136,15 @@ function useFilteredTodos(store: RootInstance) {
 }
 
 const AddTodoInput: React.FC<AddTodoInputProps> = props => {
-  const [input, setInput] = useState("")
+  const [label, setLabel] = useState("")
 
   const handleStageCreate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value)
+    setLabel(event.target.value)
   }
   const handleCommitCreate = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter" && Boolean(input.length)) {
-      props.onCreate(input)
-      setInput("")
+    if (event.key === "Enter" && Boolean(label.length)) {
+      props.onCreate(label)
+      setLabel("")
     }
   }
 
@@ -152,7 +154,7 @@ const AddTodoInput: React.FC<AddTodoInputProps> = props => {
       className={cx("new-todo")}
       placeholder="What needs to be done?"
       autoFocus
-      value={input}
+      value={label}
       onChange={handleStageCreate}
       onKeyDown={handleCommitCreate}
     />

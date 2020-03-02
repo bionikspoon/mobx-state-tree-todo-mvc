@@ -8,8 +8,8 @@ const Todo = types
     completed: false,
   })
   .actions(self => ({
-    toggle() {
-      self.completed = !self.completed
+    toggle(completed = !self.completed) {
+      self.completed = completed
     },
     setLabel(label: string) {
       self.label = label
@@ -27,6 +27,9 @@ export const RootStore = types
     },
     get completedTodos() {
       return self.todos.filter(todo => todo.completed)
+    },
+    get allCompleted() {
+      return self.todos.every(todo => todo.completed)
     },
   }))
   .views(self => ({
@@ -46,6 +49,10 @@ export const RootStore = types
     },
     clearCompletedTodos() {
       self.todos = cast(self.todos.filter(todo => !todo.completed))
+    },
+    toggleAll() {
+      const completed = !self.allCompleted
+      self.todos.forEach(todo => todo.toggle(completed))
     },
   }))
 
