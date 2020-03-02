@@ -1,4 +1,4 @@
-import { types, Instance } from "mobx-state-tree"
+import { types, Instance, cast } from "mobx-state-tree"
 import { v4 as uuid } from "uuid"
 
 const Todo = types
@@ -11,6 +11,9 @@ const Todo = types
     toggle() {
       self.completed = !self.completed
     },
+    setLabel(label: string) {
+      self.label = label
+    },
   }))
 
 export const RootStore = types
@@ -18,6 +21,19 @@ export const RootStore = types
     todos: types.optional(types.array(Todo), []),
     editing: "",
   })
+  .views(self => ({
+    get activeTodos() {
+      return self.todos.filter(todo => !todo.completed)
+    },
+    get completedTodos() {
+      return self.todos.filter(todo => todo.completed)
+    },
+  }))
+  .views(self => ({
+    get activeTodosCount() {
+      return self.activeTodos.length
+    },
+  }))
   .actions(self => ({
     addTodo(name: string, completed = false) {
       self.todos.push(Todo.create({ label: name, completed: completed }))
@@ -26,8 +42,10 @@ export const RootStore = types
       self.editing = id
     },
     removeTodo(id: string) {
-      const index = self.todos.findIndex(todo => todo.id === id)
-      self.todos.splice(index, 1)
+      self.todos = cast(self.todos.filter(todo => todo.id !== id))
+    },
+    removeCompleteTodos() {
+      self.todos = cast(self.todos.filter(todo => !todo.completed))
     },
   }))
 

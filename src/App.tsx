@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
 import { RootStore } from "./models/RootStore"
 import TodoApp from "./TodoApp"
-
 const store = RootStore.create()
 
 store.addTodo("Taste JavaScript", true)
@@ -18,5 +18,13 @@ window.store = store
 interface Props {}
 
 export default function App(_props: Props): ReactElement {
-  return <TodoApp store={store} />
+  return (
+    <Router>
+      <Switch>
+        <Route path={"/:view?"}>
+          <TodoApp store={store} />
+        </Route>
+      </Switch>
+    </Router>
+  )
 }
