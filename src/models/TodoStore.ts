@@ -1,4 +1,4 @@
-import { types, Instance, cast } from "mobx-state-tree"
+import { types, Instance, destroy, getParentOfType } from "mobx-state-tree"
 import { v4 as uuid } from "uuid"
 
 const Todo = types
@@ -14,9 +14,13 @@ const Todo = types
     setLabel(label: string) {
       self.label = label
     },
+    remove() {
+      getParentOfType(self, TodoStore).removeTodo(self as TodoInstance)
+    },
   }))
+export type TodoInstance = Instance<typeof Todo>
 
-export const RootStore = types
+export const TodoStore = types
   .model("Root", {
     todos: types.optional(types.array(Todo), []),
     editing: "",
@@ -44,11 +48,11 @@ export const RootStore = types
     editTodo(id: string) {
       self.editing = id
     },
-    removeTodo(id: string) {
-      self.todos = cast(self.todos.filter(todo => todo.id !== id))
+    removeTodo(todo: TodoInstance) {
+      destroy(todo)
     },
     clearCompletedTodos() {
-      self.todos = cast(self.todos.filter(todo => !todo.completed))
+      self.todos.replace(self.todos.filter(todo => !todo.completed))
     },
     toggleAll() {
       const completed = !self.allCompleted
@@ -56,4 +60,4 @@ export const RootStore = types
     },
   }))
 
-export type RootInstance = Instance<typeof RootStore>
+export type TodoStoreInstance = Instance<typeof TodoStore>
