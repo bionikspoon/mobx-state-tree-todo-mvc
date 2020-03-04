@@ -8,14 +8,20 @@ const Todo = types
     completed: false,
   })
   .actions(self => ({
+    remove() {
+      getParentOfType(self, TodoStore).removeTodo(self as TodoInstance)
+    },
+  }))
+  .actions(self => ({
     toggle(completed = !self.completed) {
       self.completed = completed
     },
     setLabel(label: string) {
-      self.label = label
-    },
-    remove() {
-      getParentOfType(self, TodoStore).removeTodo(self as TodoInstance)
+      if (label.length) {
+        self.label = label
+      } else {
+        self.remove()
+      }
     },
   }))
 export type TodoInstance = Instance<typeof Todo>
@@ -23,7 +29,6 @@ export type TodoInstance = Instance<typeof Todo>
 export const TodoStore = types
   .model("Root", {
     todos: types.optional(types.array(Todo), []),
-    editing: "",
   })
   .views(self => ({
     get activeTodos() {
@@ -44,9 +49,6 @@ export const TodoStore = types
   .actions(self => ({
     addTodo(name: string, completed = false) {
       self.todos.push(Todo.create({ label: name, completed: completed }))
-    },
-    editTodo(id: string) {
-      self.editing = id
     },
     removeTodo(todo: TodoInstance) {
       destroy(todo)

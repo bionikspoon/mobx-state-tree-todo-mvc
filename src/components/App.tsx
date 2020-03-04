@@ -1,5 +1,5 @@
 import React from "react"
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { BrowserRouter as Router, Route } from "react-router-dom"
 
 import { TodoStoreInstance } from "../models/TodoStore"
 import TodoApp from "./TodoApp"
@@ -13,11 +13,9 @@ const App: React.FC<AppProps> = props => {
   return (
     <>
       <Router>
-        <Switch>
-          <Route path={"/:view?"}>
-            <TodoApp store={props.store} />
-          </Route>
-        </Switch>
+        <Route path="/:view?">
+          <TodoApp store={props.store} />
+        </Route>
       </Router>
       <Footer />
     </>

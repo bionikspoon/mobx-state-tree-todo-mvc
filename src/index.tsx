@@ -7,10 +7,18 @@ import "./index.css"
 import App from "./components/App"
 import * as serviceWorker from "./serviceWorker"
 
-const store = TodoStore.create()
-
-store.addTodo("Taste JavaScript", true)
-store.addTodo("Buy a unicorn")
+const store = TodoStore.create({
+  todos: [
+    {
+      label: "Taste JavaScript",
+      completed: true,
+    },
+    {
+      label: "Buy a unicorn",
+      completed: false,
+    },
+  ],
+})
 
 declare global {
   interface Window {
