@@ -1,7 +1,7 @@
 import { types, Instance, destroy, getParentOfType } from "mobx-state-tree"
 import { v4 as uuid } from "uuid"
 
-const Todo = types
+export const Todo = types
   .model("Todo", {
     id: types.optional(types.identifier, () => uuid()),
     label: types.string,
@@ -11,11 +11,11 @@ const Todo = types
     remove() {
       getParentOfType(self, TodoStore).removeTodo(self as TodoInstance)
     },
-  }))
-  .actions(self => ({
     toggle(completed = !self.completed) {
       self.completed = completed
     },
+  }))
+  .actions(self => ({
     setLabel(label: string) {
       if (label.length) {
         self.label = label
@@ -27,7 +27,7 @@ const Todo = types
 export type TodoInstance = Instance<typeof Todo>
 
 export const TodoStore = types
-  .model("Root", {
+  .model("TodoStore", {
     todos: types.optional(types.array(Todo), []),
   })
   .views(self => ({

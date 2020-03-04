@@ -13,7 +13,7 @@ interface TodoAppProps {
   store: TodoStoreInstance
 }
 
-const TodoApp: React.FC<TodoAppProps> = observer(props => {
+const TodoApp: React.FC<TodoAppProps> = props => {
   const todos = useFilteredTodos(props.store)
 
   const [
@@ -56,9 +56,7 @@ const TodoApp: React.FC<TodoAppProps> = observer(props => {
       <FilterTodos store={props.store}></FilterTodos>
     </section>
   )
-})
-
-export default TodoApp
+}
 
 function useFilteredTodos(store: TodoStoreInstance) {
   const { view } = useParams()
@@ -72,3 +70,5 @@ function useFilteredTodos(store: TodoStoreInstance) {
       return store.todos
   }
 }
+
+export default observer(TodoApp)

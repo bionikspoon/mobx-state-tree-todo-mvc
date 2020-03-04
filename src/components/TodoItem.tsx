@@ -14,7 +14,7 @@ interface TodoItemProps {
 }
 
 // List items should get the class `editing` when editing and `completed` when marked as completed
-const TodoItem: React.FC<TodoItemProps> = observer(props => (
+const TodoItem: React.FC<TodoItemProps> = props => (
   <li
     className={cx({
       completed: props.todo.completed,
@@ -41,6 +41,6 @@ const TodoItem: React.FC<TodoItemProps> = observer(props => (
       onChange={props.todo.setLabel}
     />
   </li>
-))
+)
 
-export default TodoItem
+export default observer(TodoItem)

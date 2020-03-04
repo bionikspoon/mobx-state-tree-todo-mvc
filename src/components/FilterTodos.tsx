@@ -10,7 +10,7 @@ interface FilterTodosProps {
 }
 
 /* <!-- This footer should hidden by default and shown when there are todos --> */
-const FilterTodos: React.FC<FilterTodosProps> = observer(props => {
+const FilterTodos: React.FC<FilterTodosProps> = props => {
   if (!props.store.todos.length) {
     return null
   }
@@ -48,6 +48,6 @@ const FilterTodos: React.FC<FilterTodosProps> = observer(props => {
       </button>
     </footer>
   )
-})
+}
 
-export default FilterTodos
+export default observer(FilterTodos)

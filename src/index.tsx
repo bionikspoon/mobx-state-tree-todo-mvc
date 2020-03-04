@@ -1,32 +1,12 @@
 import React from "react"
 import ReactDOM from "react-dom"
 
-import { TodoStore } from "./models/TodoStore"
-
 import "./index.css"
-import App from "./components/App"
+import "./configure"
+
 import * as serviceWorker from "./serviceWorker"
-
-const store = TodoStore.create({
-  todos: [
-    {
-      label: "Taste JavaScript",
-      completed: true,
-    },
-    {
-      label: "Buy a unicorn",
-      completed: false,
-    },
-  ],
-})
-
-declare global {
-  interface Window {
-    store: typeof store
-  }
-}
-window.store = store
-console.info("The `TodoStore` has been added to `window.store`.\n", store)
+import App from "./components/App"
+import { store } from "./store"
 
 ReactDOM.render(<App store={store} />, document.getElementById("root"))
 

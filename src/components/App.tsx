@@ -9,17 +9,15 @@ interface AppProps {
   store: TodoStoreInstance
 }
 
-const App: React.FC<AppProps> = props => {
-  return (
-    <>
-      <Router>
-        <Route path="/:view?">
-          <TodoApp store={props.store} />
-        </Route>
-      </Router>
-      <Footer />
-    </>
-  )
-}
+const App: React.FC<AppProps> = props => (
+  <>
+    <Router>
+      <Route path="/:view?">
+        <TodoApp store={props.store} />
+      </Route>
+    </Router>
+    <Footer />
+  </>
+)
 
 export default App
