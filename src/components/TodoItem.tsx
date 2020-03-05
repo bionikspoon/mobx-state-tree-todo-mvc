@@ -4,7 +4,7 @@ import { observer } from "mobx-react"
 import { TodoInstance } from "../models/TodoStore"
 import { cx } from "../utils/styles"
 
-import EditTodoInput from "./EditTodoInput"
+import { EditTodoInput } from "./Input"
 
 interface TodoItemProps {
   todo: TodoInstance
@@ -38,7 +38,7 @@ const TodoItem: React.FC<TodoItemProps> = props => (
       show={props.isEditing}
       value={props.todo.label}
       onBlur={props.onCloseEditor}
-      onChange={props.todo.setLabel}
+      onCommit={props.todo.setLabel}
     />
   </li>
 )

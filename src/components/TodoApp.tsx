@@ -6,7 +6,7 @@ import { TodoStoreInstance, TodoInstance } from "../models/TodoStore"
 import { cx } from "../utils/styles"
 
 import FilterTodos from "./FilterTodos"
-import AddTodoInput from "./AddTodoInput"
+import { AddTodoInput } from "./Input"
 import TodoItem from "./TodoItem"
 
 interface TodoAppProps {
@@ -26,7 +26,7 @@ const TodoApp: React.FC<TodoAppProps> = props => {
     <section className={cx("todoapp")}>
       <header className={cx("header")}>
         <h1>todos</h1>
-        <AddTodoInput onCreate={props.store.addTodo}></AddTodoInput>
+        <AddTodoInput onCommit={props.store.addTodo}></AddTodoInput>
       </header>
       {/* <!-- This section should be hidden by default and shown when there are todos --> */}
       {Boolean(todos.length) && (

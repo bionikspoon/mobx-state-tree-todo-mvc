@@ -19,7 +19,7 @@ const FilterTodos: React.FC<FilterTodosProps> = props => {
     <footer className={cx("footer")}>
       {/* <!-- This should be `0 items left` by default --> */}
       <span className={cx("todo-count")}>
-        <strong>{props.store.activeTodosCount}</strong> item left
+        <strong>{props.store.activeTodos.length}</strong> item left
       </span>
       {/* <!-- Remove this if you don't implement routing --> */}
       <ul className={cx("filters")}>

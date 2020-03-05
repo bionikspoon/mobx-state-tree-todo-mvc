@@ -14,14 +14,8 @@ export const Todo = types
     toggle(completed = !self.completed) {
       self.completed = completed
     },
-  }))
-  .actions(self => ({
     setLabel(label: string) {
-      if (label.length) {
-        self.label = label
-      } else {
-        self.remove()
-      }
+      self.label = label
     },
   }))
 export type TodoInstance = Instance<typeof Todo>
@@ -41,14 +35,9 @@ export const TodoStore = types
       return self.todos.every(todo => todo.completed)
     },
   }))
-  .views(self => ({
-    get activeTodosCount() {
-      return self.activeTodos.length
-    },
-  }))
   .actions(self => ({
     addTodo(name: string, completed = false) {
-      self.todos.push(Todo.create({ label: name, completed: completed }))
+      self.todos.push(Todo.create({ label: name, completed }))
     },
     removeTodo(todo: TodoInstance) {
       destroy(todo)
