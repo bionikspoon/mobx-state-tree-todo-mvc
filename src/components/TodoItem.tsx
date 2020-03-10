@@ -16,6 +16,7 @@ interface TodoItemProps {
 // List items should get the class `editing` when editing and `completed` when marked as completed
 const TodoItem: React.FC<TodoItemProps> = props => (
   <li
+    data-testid="todo-item"
     className={cx({
       completed: props.todo.completed,
       editing: props.isEditing,

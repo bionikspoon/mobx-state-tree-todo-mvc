@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<App /> render 1`] = `
-<DocumentFragment>
+exports[`<App /> should render 1`] = `
+<div>
   <section
     class="todoapp"
   >
@@ -36,6 +36,7 @@ exports[`<App /> render 1`] = `
       >
         <li
           class="completed"
+          data-testid="todo-item"
         >
           <div
             class="view"
@@ -55,6 +56,7 @@ exports[`<App /> render 1`] = `
         </li>
         <li
           class=""
+          data-testid="todo-item"
         >
           <div
             class="view"
@@ -141,5 +143,53 @@ exports[`<App /> render 1`] = `
       </a>
     </p>
   </footer>
-</DocumentFragment>
+</div>
+`;
+
+exports[`<App /> when creating a new todo should match diff snapshot 1`] = `
+Snapshot Diff:
+- First value
++ Second value
+
+@@ -68,20 +68,39 @@
+              <button
+                class="destroy"
+              />
+            </div>
+          </li>
++         <li
++           class=""
++           data-testid="todo-item"
++         >
++           <div
++             class="view"
++           >
++             <input
++               class="toggle"
++               type="checkbox"
++             />
++             <label>
++               Create a TODO for testing
++             </label>
++             <button
++               class="destroy"
++             />
++           </div>
++         </li>
+        </ul>
+      </section>
+      <footer
+        class="footer"
+      >
+        <span
+          class="todo-count"
+        >
+          <strong>
+-           1
++           2
+          </strong>
+           item left
+        </span>
+        <ul
+          class="filters"
 `;

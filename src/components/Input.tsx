@@ -16,7 +16,7 @@ export const AddTodoInput: React.FC<AddTodoInputProps> = props => {
   const [label, setLabel] = useState("")
 
   const handleStageCreate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLabel(event.target.value)
+    setLabel(event.target.value.trim())
   }
   const handleCommitCreate = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key !== "Enter") {
