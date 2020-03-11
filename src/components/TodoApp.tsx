@@ -39,7 +39,7 @@ const TodoApp: React.FC<TodoAppProps> = props => {
             onChange={props.store.toggleAll}
           />
           <label htmlFor="toggle-all">Mark all as complete</label>
-          <ul className={cx("todo-list")}>
+          <ul className={cx("todo-list")} data-testid="todo-list">
             {todos.map(todo => (
               <TodoItem
                 key={todo.id}

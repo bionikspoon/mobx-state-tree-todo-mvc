@@ -40,12 +40,14 @@ const FilterTodos: React.FC<FilterTodosProps> = props => {
         </li>
       </ul>
       {/* <!-- Hidden if no completed items are left ↓ --> */}
-      <button
-        className={cx("clear-completed")}
-        onClick={props.store.clearCompletedTodos}
-      >
-        Clear completed
-      </button>
+      {props.store.completedTodos.length > 0 && (
+        <button
+          className={cx("clear-completed")}
+          onClick={props.store.clearCompletedTodos}
+        >
+          Clear completed
+        </button>
+      )}
     </footer>
   )
 }

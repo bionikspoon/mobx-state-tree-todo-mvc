@@ -28,8 +28,12 @@ const TodoItem: React.FC<TodoItemProps> = props => (
         type="checkbox"
         checked={props.todo.completed}
         onChange={() => props.todo.toggle(undefined)}
+        id={`todo-item-${props.todo.id}`}
       />
-      <label onDoubleClick={() => props.onOpenEditor(props.todo)}>
+      <label
+        htmlFor={`todo-item-${props.todo.id}`}
+        onDoubleClick={() => props.onOpenEditor(props.todo)}
+      >
         {props.todo.label}
       </label>
       <button className={cx("destroy")} onClick={props.todo.remove}></button>

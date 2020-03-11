@@ -33,6 +33,7 @@ exports[`<App /> should render 1`] = `
       </label>
       <ul
         class="todo-list"
+        data-testid="todo-list"
       >
         <li
           class="completed"
@@ -44,9 +45,12 @@ exports[`<App /> should render 1`] = `
             <input
               checked=""
               class="toggle"
+              id="todo-item-d4beac72-8135-4b16-a513-8600c3f7a9a0"
               type="checkbox"
             />
-            <label>
+            <label
+              for="todo-item-d4beac72-8135-4b16-a513-8600c3f7a9a0"
+            >
               Taste JavaScript
             </label>
             <button
@@ -63,9 +67,12 @@ exports[`<App /> should render 1`] = `
           >
             <input
               class="toggle"
+              id="todo-item-ca6a04fb-88b6-4fb2-8a79-7663bf4cffcd"
               type="checkbox"
             />
-            <label>
+            <label
+              for="todo-item-ca6a04fb-88b6-4fb2-8a79-7663bf4cffcd"
+            >
               Buy a unicorn
             </label>
             <button
@@ -151,7 +158,7 @@ Snapshot Diff:
 - First value
 + Second value
 
-@@ -68,20 +68,39 @@
+@@ -75,20 +75,42 @@
               <button
                 class="destroy"
               />
@@ -166,9 +173,12 @@ Snapshot Diff:
 +           >
 +             <input
 +               class="toggle"
++               id="todo-item-a09926de-eacd-42f0-a415-d24842a3c555"
 +               type="checkbox"
 +             />
-+             <label>
++             <label
++               for="todo-item-a09926de-eacd-42f0-a415-d24842a3c555"
++             >
 +               Create a TODO for testing
 +             </label>
 +             <button
