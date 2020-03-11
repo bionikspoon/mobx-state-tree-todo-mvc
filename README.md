@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/de5bc916-3545-4a24-add3-bcee1574f271/deploy-status)](https://app.netlify.com/sites/mobx-state-tree-todo-mvc/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
